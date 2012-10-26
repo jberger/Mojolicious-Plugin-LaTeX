@@ -3,7 +3,7 @@ use Mojo::Base 'Mojo::Template';
 
 use TeX::Encode;
 
-my $escape = sub{ TeX::Encode->encode($_[0]) };
+my $escape = sub { TeX::Encode->encode($_[0]) };
 
 has comment_mark  => '%';
 has escape        => sub { $escape };
