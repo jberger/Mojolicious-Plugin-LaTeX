@@ -3,8 +3,26 @@ use Mojo::Base 'Mojolicious::Plugin';
 
 our $VERSION = '0.01';
 
+use TeX::Encode;
+
 sub register {
-  my ($self, $app) = @_;
+  my ($self, $app, $conf) = @_;
+
+  $app->plugin('EPRenderer' => {
+    name => 'eptex', 
+    template => {
+      comment_mark  => '%',
+      escape        => sub { TeX::Encode->encode($_[0]) }, 
+      line_start    => '@',
+      namespace     => 'Mojo::Template::SandBox::LaTeX';
+      replace_mark  => '@',
+      tag_start     => '{@',
+      tag_end       => '@}',
+    }, 
+    %{ $conf->{template} || {} },
+  });
+
+  $app->types->type( tex => 'application/x-latex' );
 }
 
 1;
