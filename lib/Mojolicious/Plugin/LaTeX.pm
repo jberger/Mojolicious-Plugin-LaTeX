@@ -8,6 +8,8 @@ use TeX::Encode;
 sub register {
   my ($self, $app, $conf) = @_;
 
+  $app->types->type( tex => 'application/x-latex' );
+
   $app->plugin('EPRenderer' => {
     name => 'eptex', 
     template => {
@@ -18,11 +20,10 @@ sub register {
       replace_mark  => '@',
       tag_start     => '{@',
       tag_end       => '@}',
+      %{ delete($conf->{template}) || {} },
     }, 
-    %{ $conf->{template} || {} },
+    %$conf,
   });
-
-  $app->types->type( tex => 'application/x-latex' );
 }
 
 1;
