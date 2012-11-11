@@ -4,6 +4,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 our $VERSION = '0.01';
 
 use TeX::Encode;
+use Mojo::ByteStream 'b';
 
 sub register {
   my ($self, $app, $conf) = @_;
@@ -23,6 +24,27 @@ sub register {
       %{ delete($conf->{template}) || {} },
     }, 
     %$conf,
+  });
+
+  $app->helper( ltx_env => sub {
+    my $c = shift;
+    my $name = shift;
+    my $content = pop;
+    my @opts = @_;
+
+    # begin command
+    my $return = "\\begin{$name}";
+    foreach my $opt (@opts) {
+      $return .= "{$opt}"
+    }
+
+    $return .= ref $content ? $content->() : $content;
+
+    # end command
+    $return .= "\\end{$name}";
+
+    # prevent further escaping
+    return b($return);
   });
 }
 
