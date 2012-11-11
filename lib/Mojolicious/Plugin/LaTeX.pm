@@ -16,7 +16,7 @@ sub register {
       comment_mark  => '%',
       escape        => sub { TeX::Encode->encode($_[0]) }, 
       line_start    => '@',
-      namespace     => 'Mojo::Template::SandBox::LaTeX';
+      namespace     => 'Mojo::Template::SandBox::LaTeX',
       replace_mark  => '@',
       tag_start     => '{@',
       tag_end       => '@}',
