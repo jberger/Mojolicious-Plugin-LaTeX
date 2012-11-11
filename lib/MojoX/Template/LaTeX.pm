@@ -99,23 +99,22 @@ Perl lines can also be indented freely.
   @= $block->('Baerbel')
   @= $block->('Wolfgang')
 
-L<Mojo::Template> templates work just like Perl subs (actually they get
-compiled to a Perl sub internally). That means you can access arguments simply
-via C<@_>.
+L<Mojo::Template> templates get compiled to a Perl subroutine, that means you
+can access arguments simply via C<@_>.
 
   @ my ($foo, $bar) = @_;
   @ my $x = shift;
   test 123 {@= $foo @}
 
-Templates get compiled to Perl code internally, this can make debugging a bit
-tricky. But L<Mojo::Template> will return L<Mojo::Exception> objects that
-stringify to error messages with context.
+The compilation of templates to Perl code can make debugging a bit tricky, but
+L<Mojo::Template> will return L<Mojo::Exception> objects that stringify to
+error messages with context.
 
   Bareword "xx" not allowed while "strict subs" in use at template line 4.
   2: \usepackage{graphicx}
   3: \begin{document}
-  4: % my $i = 2; xx
-  5: %= $i * 2
+  4: @ my $i = 2; xx
+  5: @= $i * 2
   6: \end{document}
 
 =head1 ATTRIBUTES
